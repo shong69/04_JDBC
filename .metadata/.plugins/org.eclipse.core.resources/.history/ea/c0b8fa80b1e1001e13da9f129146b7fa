@@ -1,0 +1,55 @@
+package edu.kh.jdbc.model.dao;
+
+import java.io.FileInputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Properties;
+
+import edu.kh.jdbc.model.vo.TestVO;
+
+public class TestDAO {
+	//DAO (Data Acess Object) : 데이터가 저장된 DB에 접근하는 객체
+	//					-> SQL 수행, 결과 반환 받는 기능을 수행함
+	
+	//JDBC객체를 참조하기 위한 참조변수 선언
+	private Statement stmt;
+	private PreparedStatement pstmt;
+	private ResultSet rs;
+	
+	private Properties prop; // SQL 수행 시 구문 작성시 XML을 사용해야 하기 때문에 필요함
+	
+	//기본생성자
+	public TestDAO() {
+		// TestDAO 객체 생성시
+		// test-query.xml 파일의 내용을 읽어와
+		// Properties 객체에 저장
+		
+		
+		
+		try {
+			
+			prop = new Properties();
+			
+			prop.loadFromXML(new FileInputStream("test-query.xml"));
+
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void insert(Connection conn, TestVO vo1) {
+		
+		
+		// 1. 결과 저장용 변수를 선언하기
+		int result = 0;
+		
+		// 2. SQL 작성하기(test-query.xml에 작성된 SQL 얻어오기)
+		
+		
+		
+	}
+	
+}

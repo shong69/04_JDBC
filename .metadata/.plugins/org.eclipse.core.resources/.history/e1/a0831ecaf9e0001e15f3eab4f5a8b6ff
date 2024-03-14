@@ -1,0 +1,76 @@
+package edu.kh.jdbc1;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class JDBCExemple4 {
+
+	public static void main(String[] args) {
+		
+		//직급명, 급여를 입력받아
+		//해당 직급에서 입력받은 급여보다 많이 받는 사원의
+		//이름, 직급명, 급여, 연봉을 조회하여 출력하기
+		
+		//단, 조회 결과가 없으면 "조회 결과 없음"으로 출력하기
+		//조회 결과가 있으면 아래와 같이 출력
+		//직급명 입력 : 부사장
+		//급여 입력 : 5000000
+		//송종기 / 부사장 / 6000000 /72000000(연봉)
+		
+		//employee 객체 하나 만들기 Employee(empName, jobName, salary, annualIncome)
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		Scanner sc = new Scanner(System.in);
+		
+		try {
+			
+			System.out.print("직급명 입력 : ");
+			String empName = sc.nextLine();
+			
+			System.out.print("부서명 입력 : ");
+			String deptTitle = sc.nextLine();
+			
+			
+			
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			String type = "jdbc:oracle:thin:@"; 
+			String ip =  "localhost";   
+			String port = ":1521";  
+			String sid = ":XE";   
+			
+			String user = "kh_ksy"; //사용자 계정
+			String pw = "kh1234"; //비밀번호
+			
+			
+			String sql = "SELECT EMP_NAME, JOB_NAME, SALARY, SALARY*12 AS ANNUAL_INCOME "+
+						"FROM EMPLOYEE "+
+						"JOIN JOB USING(JOB_CODE) " +
+						"LEFT JOIN DEPARTMENT ON (DEPT_CODE = DEPT_ID) "+
+						"WHERE JOB_NAME = '" + empName+"' "+
+						"AND DEPT_TITLE = '" + deptTitle + "'";
+			
+			
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
+		
+	}
+}

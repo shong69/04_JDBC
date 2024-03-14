@@ -1,0 +1,8 @@
+package workbook;
+
+public class programmers {
+	public static void main(String[] args) {
+		int[][] list = new int[][] {{2,10}, {9,15}, {10,5}, {11,5}};
+		System.out.println(list.length);
+	}
+}

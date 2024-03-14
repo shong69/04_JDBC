@@ -1,0 +1,101 @@
+package edu.kh.jdbc.common;
+
+import java.io.FileInputStream;
+import java.sql.Connection;
+import java.util.Properties;
+
+public class JDBCTemplate {
+
+	/* DB 연결 (Connection 생성) + 자동 커밋 off, 
+	 * JDBC 객체 자원 반환(close)
+	 * 트랜젝션 제어, 
+	 * 
+	 * JDBC 템플릿은 이러한 JDBC에서 반복 사용되는 코드를 모아둔 클래스
+	 * 
+	 * *모든 필드와 메서드가 static이다*
+	 * -> 어디서든지 클래스명.필드명 / 클래스명.메서드명 호출 가능함
+	 * -> 별도 객체 생성은 안해도 됨
+	 * 
+	 * 
+	 * */
+	
+	private static Connection conn = null;
+	
+	/**DB 연결 정보를 담고 있는 Connection객체 생성, 반환 메서드
+	 * @return conn
+	 */
+	public static Connection getConnection() {
+		
+		
+		try {
+			
+			//현재 커넥션 객체가 없을 경우 -> 새 커넥션 객체 생성
+			if(conn == null || conn.isClosed()) {
+				//conn.isClosed() : 커넥션이 닫혀있는 상태면 true 반환
+				
+				
+				Properties prop = new Properties();
+				//Map<STring, String> 형태의 객체 XML입출력 특화함
+				
+				//driver.xml 파일 읽어고기
+				
+				prop.loadFromXML(new FileInputStream("driver.xml"));
+				//XMl 파일에 작성된 내용이 Properties객체에 모두 저장되엉 ㅣㅆ을 것임
+				
+				
+				//XML에서 읽어온 값을 모두 변수에 저장하기
+				String driver = prop.getProperty("driver");
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		}catch(Exception e){
+			System.out.println("Connection 생성 중 예외 발생");
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+}
