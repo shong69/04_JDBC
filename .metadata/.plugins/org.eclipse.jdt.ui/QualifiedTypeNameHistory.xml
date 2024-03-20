@@ -15,9 +15,13 @@
     <fullyQualifiedTypeName name="edu.kh.emp.common.JDBCTemplate"/>
     <fullyQualifiedTypeName name="edu.kh.emp.model.dao.EmployeeDAO"/>
     <fullyQualifiedTypeName name="java.lang.Math"/>
-    <fullyQualifiedTypeName name="edu.kh.jdbc.common.JDBCTemplate"/>
-    <fullyQualifiedTypeName name="java.sql.Statement"/>
-    <fullyQualifiedTypeName name="edu.kh.jdbc.common.Session"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="edu.kh.jdbc.member.model.dto.Member"/>
+    <fullyQualifiedTypeName name="java.util.Random"/>
+    <fullyQualifiedTypeName name="edu.kh.jdbc.board.view.BoardView"/>
+    <fullyQualifiedTypeName name="java.sql.Statement"/>
+    <fullyQualifiedTypeName name="edu.kh.jdbc.board.model.dto.Comment"/>
+    <fullyQualifiedTypeName name="edu.kh.jdbc.common.Session"/>
+    <fullyQualifiedTypeName name="edu.kh.jdbc.common.JDBCTemplate"/>
+    <fullyQualifiedTypeName name="java.awt.print.Printable"/>
 </qualifiedTypeNameHistroy>

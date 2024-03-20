@@ -11,124 +11,124 @@ import static edu.kh.jdbc.common.JDBCTemplate.*;
 import edu.kh.jdbc.member.model.dto.Member;
 
 public class MainDAO {
-
-	//JDBC객체 참조변수 선언
-	private Statement stmt; // sql 수행 후 결과 반환 받기 위해
-	private PreparedStatement pstmt; //placeholder(위치 홀더'?')를 포함한 sql 세팅/수행/결과반환
-	private ResultSet rs; //select 수행결과를 저장함
 	
-	private Properties prop; 
+	// JDBC 객체 참조 변수
+	private Statement stmt; // SQL 수행, 결과 반환
+	private PreparedStatement pstmt; // placeholder(위치홀더:?)를 포함한 SQL 세팅/수행/결과반환
+	private ResultSet rs; // SELECT 수행 결과 저장
 	
-	//기본 생성자 DAO 객체가 생성될 때 xml 파일 읽어와서 properties 객체에 저장하기
+	private Properties prop;
+	
+	
+	// 기본생성자 DAO 객체가 생성될 때 xml 파일 읽어와 Properties 객체 저장
 	public MainDAO() {
 		
-		try { //xml파일 읽어오며 inputstream 사용하기 때문에 IOException 고려하여 try문 사용
+		try {
 			prop = new Properties();
 			prop.loadFromXML(new FileInputStream("main-sql.xml"));
-			// -> Properties객체에 K:V 형식으로 xml내용이 저장됨
+			// -> Properties 객체에
+			//    key:value 형식으로 xml 내용이 저장됨
 			
-						
-		}catch (Exception e) {
-			e.printStackTrace();		
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		
-		
-		
 		
 	}
 
-	/** 로그인 DAO(아이디, 비밀번호가 일치하는 회원 조회하기)
+
+	/** 로그인 DAO (아이디, 비밀번호 일치 회원 조회)
 	 * @param conn
 	 * @param memberId
 	 * @param memberPw
-	 * @return
+	 * @return member
 	 */
-	public Member login(Connection conn, String memberId, String memberPw) throws Exception {
+	public Member login(Connection conn, String memberId, String memberPw) throws Exception{
 		
 		// 1. 결과 저장용 변수 생성
 		Member member = null;
 		
 		try {
+			// 2. SQL 작성 후 수행
+			String sql = prop.getProperty("login");
 			
-			// 2. sql 작성 후 수행
-			String sql =  prop.getProperty("login");
-			
-			//PreparedStatement 객체 생성 후 sql 담아두기
+			// PreparedStatement 객체를 생성하고 SQL을 담아둠
 			pstmt = conn.prepareStatement(sql);
 			
-			//placeholder에 맞는 값 대입
+			// placeholder에 맞는 값 대입
 			pstmt.setString(1, memberId);
 			pstmt.setString(2, memberPw);
 			
-			rs = pstmt.executeQuery(); //select 수행 후 결과 반환받기
+			rs = pstmt.executeQuery(); // SELECT 수행 후 결과 반환 받기
 			
-			// 3. 조회 결과를 한 행씩 접근해서 얻어오기
+			// 3. 조회 결과를 1행씩 접근해서 얻어오기
 			if(rs.next()) {
 				int memberNo = rs.getInt("MEMBER_NO");
+				//String memberId = rs.getString("MEMBER_ID");
+				// 입력받은 아이디 == 조회한 아이디
 				String memberName = rs.getString("MEMBER_NM");
 				String memberGender = rs.getString("MEMBER_GENDER");
 				String enrollDate = rs.getString("ENROLL_DT");
 				
-				//Member객체를 생성 후 값 세팅하기
+				// Member 객체 생성 후 값 세팅
 				member = new Member();
+				
 				member.setMemberNo(memberNo);
 				member.setMemberId(memberId);
-				member.setMemberPw(memberPw);
-				member.setMembrName(memberName);
-				member.setMemebrGender(memberGender);
-				member.setEnrolldate(enrollDate);
-				
+				member.setMemberName(memberName);
+				member.setMemberGender(memberGender);
+				member.setEnrollDate(enrollDate);
 			}
-
 			
-		}finally {
+			
+		} finally {
+			// 4. 사용한 JDBC 객체 자원 반환
 			close(rs);
 			close(pstmt);
 		}
 		
-		
+		// 5. 결과 반환
 		return member;
 	}
 
-	/** 아이디 중복 검사 sql 수행 dao
+
+	/** 아이디 중복 검사 SQL 수행 DAO
 	 * @param conn
 	 * @param memberId
-	 * @return
+	 * @return result
 	 */
-	public int idDuplicationCheck(Connection conn, String memberId) throws Exception{
-		int result  = 0;
+	public int idDuplicationCheck(Connection conn, String memberId) throws Exception {
+		
+		int result = 0;
 		
 		try {
-			
 			String sql = prop.getProperty("idDuplicationCheck");
+			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, memberId);
 			
 			rs = pstmt.executeQuery();
+			
 			if(rs.next()) {
-				
-				result = rs.getInt(1); //컬럼 순서로도 지정 가능함
+				result = rs.getInt(1);
 			}
 			
-		}finally {
+		} finally {
 			close(rs);
 			close(pstmt);
+			
 		}
-		
-		
-		
 		
 		return result;
 	}
 
-	/** 회원가입 SQL 수행 DAO(INSERT)
+
+	/** 회원 가입 SQL 수행 DAO(INSERT)
 	 * @param conn
 	 * @param member
 	 * @return result
 	 */
-	public int signup(Connection conn, Member member) throws Exception {
-
+	public int signUp(Connection conn, Member member) throws Exception {
+		
 		int result = 0;
 		
 		try {
@@ -136,26 +136,35 @@ public class MainDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			// ?(placeholder)에 값 세팅
+			//  ?(placeholder)에 값 세팅
 			pstmt.setString(1, member.getMemberId());
 			pstmt.setString(2, member.getMemberPw());
-			pstmt.setString(3, member.getMembrName());
-			pstmt.setString(4, member.getMemebrGender());
-			
+			pstmt.setString(3, member.getMemberName());
+			pstmt.setString(4, member.getMemberGender());
 			
 			result = pstmt.executeUpdate();
 			
 			
-			
-			
-			
-			
-		}finally {
-			
+		} finally {
 			close(pstmt);
-			
 		}
+		
 		return result;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
